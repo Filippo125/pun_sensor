@@ -32,19 +32,17 @@ class PUNOptionsFlow(config_entries.OptionsFlow):
         data_schema = {
             vol.Required(CONF_SCAN_HOUR, default=self.config_entry.options.get(CONF_SCAN_HOUR, self.config_entry.data[CONF_SCAN_HOUR])): vol.All(cv.positive_int, vol.Range(min=0, max=23)),
             vol.Optional(CONF_ACTUAL_DATA_ONLY, default=self.config_entry.options.get(CONF_ACTUAL_DATA_ONLY, self.config_entry.data[CONF_ACTUAL_DATA_ONLY])): cv.boolean,
+            vol.Optional(CONF_FIXED_SERVICE, default=self.config_entry.options.get(CONF_FIXED_SERVICE, self.config_entry.data[CONF_FIXED_SERVICE])): float,
+            vol.Optional(CONF_VAR_FEE, default=self.config_entry.options.get(CONF_VAR_FEE, self.config_entry.data[CONF_VAR_FEE])): float,
+            vol.Optional(CONF_VAR_DISP, default=self.config_entry.options.get(CONF_VAR_DISP, self.config_entry.data[CONF_VAR_DISP])): float,
+            vol.Optional(CONF_VAR_LOST, default=self.config_entry.options.get(CONF_VAR_LOST, self.config_entry.data[CONF_VAR_LOST])): float,
+            vol.Optional(CONF_VAR_DISPEN, default=self.config_entry.options.get(CONF_VAR_DISPEN, self.config_entry.data[CONF_VAR_DISPEN])): float,
+            vol.Optional(CONF_VAR_MAXUC, default=self.config_entry.options.get(CONF_VAR_MAXUC, self.config_entry.data[CONF_VAR_MAXUC])): float,
+            vol.Optional(CONF_VAR_ONERI_ASOS, default=self.config_entry.options.get(CONF_VAR_ONERI_ASOS, self.config_entry.data[CONF_VAR_ONERI_ASOS])): float,
+            vol.Optional(CONF_VAR_ONERI_ARIM, default=self.config_entry.options.get(CONF_VAR_ONERI_ARIM, self.config_entry.data[CONF_VAR_ONERI_ARIM])): float,
+            vol.Optional(CONF_TAXES, default=self.config_entry.options.get(CONF_TAXES, self.config_entry.data[CONF_TAXES])): float,
+            vol.Optional(CONF_IVA, default=self.config_entry.options.get(CONF_IVA, self.config_entry.data[CONF_IVA])): vol.All(cv.positive_int, vol.Range(min=0, max=100))
         }
-
-        if self.show_advanced_options:
-            data_schema[vol.Optional(CONF_FIXED_SERVICE, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_FEE, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_DISP, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_LOST, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_DISPEN, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_MAXUC, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_ONERI_ASOS, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_ONERI_ARIM, default=0)]: float
-            data_schema[vol.Optional(CONF_TAXES, default=0)]: float
-            data_schema[vol.Optional(CONF_IVA, default=10)]: vol.All(cv.positive_int, vol.Range(min=0, max=100))
 
         # Mostra la schermata di configurazione, con gli eventuali errori
         return self.async_show_form(
@@ -55,7 +53,7 @@ class PUNConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Configurazione per prezzi PUN (= prima configurazione)"""
 
     # Versione della configurazione (per utilizzi futuri)
-    VERSION = 1
+    VERSION = 2
 
     @staticmethod
     @callback
@@ -81,21 +79,18 @@ class PUNConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         data_schema = {
             vol.Required(CONF_SCAN_HOUR, default=1): vol.All(cv.positive_int, vol.Range(min=0, max=23)),
             vol.Optional(CONF_ACTUAL_DATA_ONLY, default=False): cv.boolean,
+            vol.Optional(CONF_FIXED_SERVICE, default=0.0): float,
+            vol.Optional(CONF_VAR_FEE, default=0.0): float,
+            vol.Optional(CONF_VAR_DISP, default=0.0): float,
+            vol.Optional(CONF_VAR_LOST, default=0.0): float,
+            vol.Optional(CONF_VAR_DISPEN, default=0.0): float,
+            vol.Optional(CONF_VAR_MAXUC, default=0.0): float,
+            vol.Optional(CONF_VAR_ONERI_ASOS, default=0.0): float,
+            vol.Optional(CONF_VAR_ONERI_ARIM, default=0.0): float,
+            vol.Optional(CONF_TAXES, default=0.0): float,
+            vol.Optional(CONF_IVA, default=10): vol.All(cv.positive_int, vol.Range(min=0, max=100))
 
         }
-
-
-        if self.show_advanced_options:
-            data_schema[vol.Optional(CONF_FIXED_SERVICE, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_FEE, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_DISP, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_LOST, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_DISPEN, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_MAXUC, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_ONERI_ASOS, default=0)]: float
-            data_schema[vol.Optional(CONF_VAR_ONERI_ARIM, default=0)]: float
-            data_schema[vol.Optional(CONF_TAXES, default=0)]: float
-            data_schema[vol.Optional(CONF_IVA, default=10)]:  vol.All(cv.positive_int, vol.Range(min=0, max=100))
 
 
         # Mostra la schermata di configurazione, con gli eventuali errori

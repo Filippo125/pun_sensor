@@ -29,7 +29,8 @@ from .const import (
     CONF_ACTUAL_DATA_ONLY,
     COORD_EVENT,
     EVENT_UPDATE_FASCIA,
-    EVENT_UPDATE_PUN
+    EVENT_UPDATE_PUN, CONF_FIXED_SERVICE, CONF_VAR_FEE, CONF_VAR_DISP, CONF_VAR_LOST, CONF_VAR_DISPEN, CONF_VAR_MAXUC,
+    CONF_VAR_ONERI_ASOS, CONF_VAR_ONERI_ARIM, CONF_TAXES, CONF_IVA
 )
 
 import logging
@@ -134,6 +135,20 @@ class PUNDataUpdateCoordinator(DataUpdateCoordinator):
         # Inizializza i valori di configurazione (dalle opzioni o dalla configurazione iniziale)
         self.actual_data_only = config.options.get(CONF_ACTUAL_DATA_ONLY, config.data[CONF_ACTUAL_DATA_ONLY])
         self.scan_hour = config.options.get(CONF_SCAN_HOUR, config.data[CONF_SCAN_HOUR])
+
+        self.price_fixed = config.options.get(CONF_FIXED_SERVICE, config.data[CONF_FIXED_SERVICE])
+        self.price_perc = config.options.get(CONF_IVA,config.data[CONF_IVA])
+
+        self.price_per_kwh = sum([
+        config.options.get(CONF_VAR_FEE,config.data[CONF_VAR_FEE]),
+        config.options.get(CONF_VAR_DISP,config.data[CONF_VAR_DISP]),
+        config.options.get(CONF_VAR_LOST,config.data[CONF_VAR_LOST]),
+        config.options.get(CONF_VAR_DISPEN,config.data[CONF_VAR_DISPEN]),
+        config.options.get(CONF_VAR_MAXUC,config.data[CONF_VAR_MAXUC]),
+        config.options.get(CONF_VAR_ONERI_ASOS,config.data[CONF_VAR_ONERI_ASOS]),
+        config.options.get(CONF_VAR_ONERI_ARIM,config.data[CONF_VAR_ONERI_ARIM]),
+        config.options.get(CONF_TAXES,config.data[CONF_TAXES]),
+        ])
 
         # Inizializza i valori di default
         self.web_retries = 0
@@ -353,6 +368,9 @@ class PUNDataUpdateCoordinator(DataUpdateCoordinator):
         # Schedula la prossima esecuzione
         self.schedule_token = async_track_point_in_time(self.hass, self.update_pun, next_update_pun)
         _LOGGER.debug('Prossimo aggiornamento web: %s', next_update_pun.strftime('%d/%m/%Y %H:%M:%S %z'))
+
+    async def update_price(self):
+
 
 def get_fascia_for_xml(data, festivo, ora) -> int:
     """Restituisce il numero di fascia oraria di un determinato giorno/ora"""

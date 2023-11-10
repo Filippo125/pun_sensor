@@ -5,7 +5,16 @@
         "title": "Impostazioni scraping PUN",
         "data": {
           "scan_hour": "Ora inizio download dati (0-23)",
-          "actual_data_only": "Usa solo dati reali ad inizio mese"
+          "actual_data_only": "Usa solo dati reali ad inizio mese",
+          "var_fee": "Fee €/kWh",
+          "var_disp": "Dispacciamento €/kWh",
+          "var_lost": "Perdite di rete €/kWh",
+          "var_dispen": "Quota Energia Dispacciamento €/kWh",
+          "var_maxuc": "Maggiorazioni UC €/kWh",
+          "var_asos": "Quota Energia ASOS €/kWh",
+          "var_arim": "Quota Energia ARIM €/kWh",
+          "taxes": "Imposte erariali €/kWh",
+          "iva": "Iva %"
         }
       }
     },
@@ -22,7 +31,17 @@
         "title": "Modifica impostazioni scraping PUN",
         "data": {
           "scan_hour": "Ora inizio download dati (0-23)",
-          "actual_data_only": "Usa solo dati reali ad inizio mese"
+          "actual_data_only": "Usa solo dati reali ad inizio mese",
+          "fixed_service": "Quota fissa €/mese",
+          "var_fee": "Fee €/kWh",
+          "var_disp": "Dispacciamento €/kWh",
+          "var_lost": "Perdite di rete €/kWh",
+          "var_dispen": "Quota Energia Dispacciamento €/kWh",
+          "var_maxuc": "Maggiorazioni UC €/kWh",
+          "var_asos": "Quota Energia ASOS €/kWh",
+          "var_arim": "Quota Energia ARIM €/kWh",
+          "taxes": "Imposte erariali €/kWh",
+          "iva": "Iva %"
         }
       }
     }
