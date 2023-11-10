@@ -6,7 +6,9 @@ import voluptuous as vol
 from .const import (
     DOMAIN,
     CONF_SCAN_HOUR,
-    CONF_ACTUAL_DATA_ONLY,
+    CONF_ACTUAL_DATA_ONLY, CONF_FIXED_SERVICE, CONF_VAR_FEE, CONF_VAR_DISP, CONF_VAR_LOST, CONF_VAR_DISPEN,
+    CONF_VAR_MAXUC, CONF_VAR_ONERI_ASOS, CONF_VAR_ONERI_ARIM, CONF_TAXES, CONF_IVA,
+
 )
 
 class PUNOptionsFlow(config_entries.OptionsFlow):
@@ -31,6 +33,18 @@ class PUNOptionsFlow(config_entries.OptionsFlow):
             vol.Required(CONF_SCAN_HOUR, default=self.config_entry.options.get(CONF_SCAN_HOUR, self.config_entry.data[CONF_SCAN_HOUR])): vol.All(cv.positive_int, vol.Range(min=0, max=23)),
             vol.Optional(CONF_ACTUAL_DATA_ONLY, default=self.config_entry.options.get(CONF_ACTUAL_DATA_ONLY, self.config_entry.data[CONF_ACTUAL_DATA_ONLY])): cv.boolean,
         }
+
+        if self.show_advanced_options:
+            data_schema[vol.Optional(CONF_FIXED_SERVICE, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_FEE, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_DISP, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_LOST, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_DISPEN, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_MAXUC, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_ONERI_ASOS, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_ONERI_ARIM, default=0)]: float
+            data_schema[vol.Optional(CONF_TAXES, default=0)]: float
+            data_schema[vol.Optional(CONF_IVA, default=10)]: vol.All(cv.positive_int, vol.Range(min=0, max=100))
 
         # Mostra la schermata di configurazione, con gli eventuali errori
         return self.async_show_form(
@@ -67,7 +81,22 @@ class PUNConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         data_schema = {
             vol.Required(CONF_SCAN_HOUR, default=1): vol.All(cv.positive_int, vol.Range(min=0, max=23)),
             vol.Optional(CONF_ACTUAL_DATA_ONLY, default=False): cv.boolean,
+
         }
+
+
+        if self.show_advanced_options:
+            data_schema[vol.Optional(CONF_FIXED_SERVICE, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_FEE, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_DISP, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_LOST, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_DISPEN, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_MAXUC, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_ONERI_ASOS, default=0)]: float
+            data_schema[vol.Optional(CONF_VAR_ONERI_ARIM, default=0)]: float
+            data_schema[vol.Optional(CONF_TAXES, default=0)]: float
+            data_schema[vol.Optional(CONF_IVA, default=10)]:  vol.All(cv.positive_int, vol.Range(min=0, max=100))
+
 
         # Mostra la schermata di configurazione, con gli eventuali errori
         return self.async_show_form(

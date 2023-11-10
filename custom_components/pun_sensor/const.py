@@ -15,3 +15,17 @@ EVENT_UPDATE_PUN = "event_update_pun"
 # Parametri configurabili da configuration.yaml
 CONF_SCAN_HOUR = "scan_hour"
 CONF_ACTUAL_DATA_ONLY = "actual_data_only"
+
+CONF_FIXED_SERVICE = "Quota fissa €/mese"
+CONF_VAR_FEE = "Fee €/kWh"
+CONF_VAR_DISP = "Dispacciamento €/kWh"
+CONF_VAR_LOST = "Perdite di rete €/kWh"
+CONF_VAR_DISPEN = "Quota Energia Dispacciamento €/kWh"
+CONF_VAR_MAXUC = "Maggiorazioni UC €/kWh"
+
+CONF_VAR_ONERI_ASOS = "Quota Energia ASOS €/kWh"
+CONF_VAR_ONERI_ARIM = "Quota Energia ARIM €/kWh"
+
+CONF_TAXES = "Imposte erariali €/kWh"
+CONF_IVA = "Iva %"
+

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from homeassistant.components.sensor import (
     ENTITY_ID_FORMAT,
     SensorEntity,
