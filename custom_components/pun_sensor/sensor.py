@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from homeassistant.components.number import NumberEntity
 from homeassistant.components.sensor import (
     ENTITY_ID_FORMAT,
     SensorEntity,
@@ -52,6 +53,9 @@ async def async_setup_entry(hass: HomeAssistant, config: ConfigEntry,
     entities.append(PUNSensorEntity(coordinator, PUN_FASCIA_F3))
     entities.append(FasciaPUNSensorEntity(coordinator))
     entities.append(PrezzoFasciaPUNSensorEntity(coordinator))
+    entities.append(PricePerKwEntity(coordinator))
+    entities.append(PriceFixedEntity(coordinator))
+    entities.append(PriceTaxEntity(coordinator))
 
     # Aggiunge i sensori ma non aggiorna automaticamente via web
     # per lasciare il tempo ad Home Assistant di avviarsi
@@ -324,3 +328,123 @@ class PrezzoFasciaPUNSensorEntity(FasciaPUNSensorEntity, RestoreEntity):
             ATTR_ROUNDED_DECIMALS: str(format(round(self.native_value, 3), '.3f'))
         }
         return state_attr
+
+
+class PricePerKwEntity(CoordinatorEntity, NumberEntity):
+    """Sensore che rappresenta la fascia PUN corrente"""
+
+    def __init__(self, coordinator: PUNDataUpdateCoordinator) -> None:
+        super().__init__(coordinator)
+
+        # Inizializza coordinator
+        self.coordinator = coordinator
+
+        # ID univoco sensore basato su un nome fisso
+        self.entity_id = ENTITY_ID_FORMAT.format('price_per_kwh')
+        self._attr_unique_id = self.entity_id
+        self._attr_has_entity_name = True
+
+    def _handle_coordinator_update(self) -> None:
+        """Gestisce l'aggiornamento dei dati dal coordinator"""
+        self.async_write_ha_state()
+
+    @property
+    def should_poll(self) -> bool:
+        """Determina l'aggiornamento automatico"""
+        return False
+
+    @property
+    def available(self) -> bool:
+        """Determina se il valore è disponibile"""
+        return self.coordinator.price_per_kwh is not None
+
+
+    @property
+    def icon(self) -> str:
+        """Icona da usare nel frontend"""
+        return "mdi:timeline-clock-outline"
+
+    @property
+    def name(self) -> str:
+        """Restituisce il nome del sensore"""
+        return "Costo € per kwh"
+
+
+class PriceFixedEntity(CoordinatorEntity, NumberEntity):
+    """Sensore che rappresenta la fascia PUN corrente"""
+
+    def __init__(self, coordinator: PUNDataUpdateCoordinator) -> None:
+        super().__init__(coordinator)
+
+        # Inizializza coordinator
+        self.coordinator = coordinator
+
+        # ID univoco sensore basato su un nome fisso
+        self.entity_id = ENTITY_ID_FORMAT.format('price_per_meter')
+        self._attr_unique_id = self.entity_id
+        self._attr_has_entity_name = True
+
+    def _handle_coordinator_update(self) -> None:
+        """Gestisce l'aggiornamento dei dati dal coordinator"""
+        self.async_write_ha_state()
+
+    @property
+    def should_poll(self) -> bool:
+        """Determina l'aggiornamento automatico"""
+        return False
+
+    @property
+    def available(self) -> bool:
+        """Determina se il valore è disponibile"""
+        return self.coordinator.price_fixed is not None
+
+
+    @property
+    def icon(self) -> str:
+        """Icona da usare nel frontend"""
+        return "mdi:timeline-clock-outline"
+
+    @property
+    def name(self) -> str:
+        """Restituisce il nome del sensore"""
+        return "Costo fisso €"
+
+
+class PriceTaxEntity(CoordinatorEntity, NumberEntity):
+    """Sensore che rappresenta la fascia PUN corrente"""
+
+    def __init__(self, coordinator: PUNDataUpdateCoordinator) -> None:
+        super().__init__(coordinator)
+
+        # Inizializza coordinator
+        self.coordinator = coordinator
+
+        # ID univoco sensore basato su un nome fisso
+        self.entity_id = ENTITY_ID_FORMAT.format('price_tax_percentage')
+        self._attr_unique_id = self.entity_id
+        self._attr_has_entity_name = True
+
+    def _handle_coordinator_update(self) -> None:
+        """Gestisce l'aggiornamento dei dati dal coordinator"""
+        self.async_write_ha_state()
+
+    @property
+    def should_poll(self) -> bool:
+        """Determina l'aggiornamento automatico"""
+        return False
+
+    @property
+    def available(self) -> bool:
+        """Determina se il valore è disponibile"""
+        return self.coordinator.price_fixed is not None
+
+
+    @property
+    def icon(self) -> str:
+        """Icona da usare nel frontend"""
+        return "mdi:timeline-clock-outline"
+
+    @property
+    def name(self) -> str:
+        """Restituisce il nome del sensore"""
+        return "Costo tasse percentuale"
