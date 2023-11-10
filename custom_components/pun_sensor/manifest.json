@@ -1,7 +1,7 @@
 {
   "domain": "pun_sensor",
-  "name": "Prezzi PUN del mese",
-  "codeowners": ["@virtualdj"],
+  "name": "Prezzi PUN del mese MOD",
+  "codeowners": ["@virtualdj", "@filippo125"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/virtualdj/pun_sensor",
